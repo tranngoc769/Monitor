@@ -6,7 +6,8 @@ class History_model extends CI_Model
     // GET ALL BLOG
     public function get_history()
     {
-        $today = date('Y-m-d');
+        $date = new DateTime("now", new DateTimeZone('Asia/Ho_Chi_Minh') );
+        $today = $date->format('Y-m-d');
         $data =  $this->db->select("*")
             ->order_by("date", "ASC")
             ->get("blogs");
@@ -14,7 +15,8 @@ class History_model extends CI_Model
     }
     public function get_online_today()
     {
-        $today = date('Y-m-d');
+        $date = new DateTime("now", new DateTimeZone('Asia/Ho_Chi_Minh') );
+        $today = $date->format('Y-m-d');
         $sql = "SELECT
         h.userid,
         h.check_in,
@@ -30,7 +32,8 @@ class History_model extends CI_Model
     
     public function get_all_log_today()
     {
-        $today = date('Y-m-d');
+        $date = new DateTime("now", new DateTimeZone('Asia/Ho_Chi_Minh') );
+        $today = $date->format('Y-m-d');
         $sql = "SELECT * 
         FROM
         log l join user u on l.userid = u.id
@@ -55,7 +58,8 @@ class History_model extends CI_Model
     }
     public function get_user_history($id)
     {
-        $today = date('Y-m-d');
+        $date = new DateTime("now", new DateTimeZone('Asia/Ho_Chi_Minh') );
+        $today = $date->format('Y-m-d');
         $sql = "SELECT
         h.userid,
         h.data

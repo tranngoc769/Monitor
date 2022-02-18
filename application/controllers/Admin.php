@@ -96,9 +96,10 @@ class Admin extends CI_Controller
             $from = $_GET["from"];
             $to = $_GET["to"];
         }
+        $date = new DateTime("now", new DateTimeZone('Asia/Ho_Chi_Minh') );
         if ($from == "" && $to == ""){
-            $from = date('Y-m-01');
-            $to = date('Y-m-t');
+            $from = $date->format('Y-m-01');
+            $to = $date->format('Y-m-t');
         }
         $all_apps = array();
         $reports = $this->history_model->get_user_data_report($id,$from, $to);
