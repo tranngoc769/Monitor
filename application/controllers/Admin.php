@@ -81,6 +81,60 @@ class Admin extends CI_Controller
         // 
         // $this->load->view('layout/admin/admin_footer.php');
     }
+    public function report()
+    {
+        // $this->gate_model->admin_gate();
+        $data['title'] = "Báo cáo";
+        $id = $_GET["id"];
+        $userdata = $this->history_model->get_user_data($id);
+        $data['userdata'] = $userdata;
+        $logs = $this->history_model->get_all_log_today();
+        $data['logs'] = $logs;
+        $from = "";
+        $to = "";
+        if (isset($_GET["from"]) && isset($_GET["to"])){
+            $from = $_GET["from"];
+            $to = $_GET["to"];
+        }
+        if ($from == "" && $to == ""){
+            $from = date('Y-m-01');
+            $to = date('Y-m-t');
+        }
+        $all_apps = array();
+        $reports = $this->history_model->get_user_data_report($id,$from, $to);
+        for ($i=0; $i < count($reports) ; $i++) { 
+            $date_report = $reports[$i]->data;
+            try {
+                $date_report = json_decode($date_report);
+            } catch (\Throwable $th) {
+            }
+            if ($date_report != null){
+                foreach($date_report as $key => $value) {
+                    if ($all_apps[$key] == null){
+                        $all_apps[$key] = array("detail"=>$value->detail,"online"=>0);
+                    }
+                    try {
+                        $all_apps[$key]["online"] = $all_apps[$key]["online"] + $value->time_online;
+                    } catch (Exception $th) {
+                        //throw $th;
+                    }
+                }
+            }
+            
+        }
+        $data['reports'] = $all_apps;
+        $data['from'] = $from;
+        $data['to'] = $to;
+        // 
+        // $head['username'] = $this->session->userdata["username"];
+        $this->load->view('layout/head.php',$data);
+        $this->load->view('layout/header.php');
+        $this->load->view('layout/side.php');
+        $this->load->view('report', $data);
+        $this->load->view('layout/reportfooter.php');
+        // 
+        // $this->load->view('layout/admin/admin_footer.php');
+    }
     public function get_user()
     {
         $id = $_GET["id"];

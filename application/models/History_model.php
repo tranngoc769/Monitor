@@ -44,7 +44,13 @@ class History_model extends CI_Model
         ->limit(1)
         ->get_where("user", array("id" => $id))
         ->row();
-
+        return $query;
+    }
+    public function get_user_data_report($id,$from,$to)
+    {
+        $sql = "SELECT * FROM history WHERE userid = $id and check_in BETWEEN '$from 00:00:00' and '$to 23:59:00'";
+        $query = $this->db->query($sql)
+        ->result();
         return $query;
     }
     public function get_user_history($id)
