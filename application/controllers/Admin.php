@@ -202,7 +202,7 @@ class Admin extends CI_Controller
     public function add_app()
     {
         $name = $this->input->post("name");
-        $detail = $this->input->post("name");
+        $detail = $this->input->post("detail");
         $status = $this->user_model->is_exist_app($name);
         if ($status == -1){
             // Khoong ton tai --. add
